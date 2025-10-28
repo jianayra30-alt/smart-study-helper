@@ -1,27 +1,15 @@
+const apiKey = "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"; 
+
 document.getElementById("askBtn").addEventListener("click", async () => {
   const question = document.getElementById("question").value.trim();
   const answerDiv = document.getElementById("answer");
 
   if (!question) {
-    answerDiv.innerHTML = "Tolong tulis pertanyaannya dulu ya 😊";
+    answerDiv.innerHTML = "tolong tulis pertanyaannya dulu ya 😊";
     return;
   }
 
-  answerDiv.innerHTML = "⏳ Sedang memproses jawaban...";
-}
-                                                   { 
-  const apiKey = "jia-openai-key";
-}
-document.getElementById("askBtn").addEventListener("click", async () => {
-  const question = document.getElementById("question").value.trim();
-  const answerDiv = document.getElementById("answer");
-
-  if (!question) {
-    answerDiv.innerHTML = "Tolong tulis pertanyaannya dulu ya 😊";
-    return;
-  }
-
-  answerDiv.innerHTML = "⏳ Sedang memproses jawaban...";
+  answerDiv.innerHTML = "⏳ sedang memproses jawaban...";
 
   try {
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -37,8 +25,15 @@ document.getElementById("askBtn").addEventListener("click", async () => {
     });
 
     const data = await response.json();
-    answerDiv.innerHTML = `🤖 Jawaban AI:<br><br>${data.choices[0].message.content}`;
+
+    if (data.choices && data.choices.length > 0) {
+      answerDiv.innerHTML = `🤖 jawaban ai:<br><br>${data.choices[0].message.content}`;
+    } else {
+      answerDiv.innerHTML = "⚠️ tidak ada jawaban yang diterima, coba lagi ya!";
+    }
+
   } catch (error) {
-    answerDiv.innerHTML = "⚠️ Gagal mengambil jawaban. Coba lagi nanti ya!";
+    console.error(error);
+    answerDiv.innerHTML = "⚠️ gagal mengambil jawaban. coba lagi nanti ya!";
   }
 });
